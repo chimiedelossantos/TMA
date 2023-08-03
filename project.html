@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Project Details</title>
+</head>
+<body onload="projStartUp()">
+    <div class="project-details">
+        <div class="back">
+          <a href="index.html">Back to Projects</a>
+        </div>
+        <div class="project-info">
+          <h2 class="projectName" id="projectName"></h2>
+          <p class="projectDescription" id="projectDescription"></p>
+        </div>
+        <button class="add-board-btn">Add Board</button>
+      </div>
+
+      <div class="board-container" id="boardContainer"></div>
+    
+      <div class="popup" id="popup">
+        <div class="popup-content">
+          <span class="close-popup" id="closePopup">&times;</span>
+          <h2>Add Board</h2>
+          <input type="text" id="boardName" placeholder="Board Name">
+          <input type="color" id="boardColor" value="#ffffff">
+          <button id="saveBoardBtn">Save</button>
+        </div>
+      </div>
+    
+
+  <script src="project.js" defer></script>
+</body>
+</html>

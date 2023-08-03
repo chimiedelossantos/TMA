@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
+  .project-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Align to the left */
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .project {
+    width: calc(150px); /* Adjust the width to your preference */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the width */
+  
+  }
+  
+  .project:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .add-project-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex; /* Use flexbox for centering */
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px; /* Adding rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Enhancing shadow */
+    width: 80%; /* Adjusting width */
+    max-width: 400px; /* Limiting width for responsiveness */
+    position: relative; /* For positioning close button */
+  }
+  
+  .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+ }
+  
+
+ .back {
+    position: absolute;
+    top: 20px;
+    right: 20px; /* Align on the right side */
+    text-align: right;
+  }
+  
+  .project-info {
+    position: absolute;
+    top: 10px; /* Adjust top value for spacing */
+    left: 20px; /* Align on the left side */
+  }
+  
+  .projectName {
+    font-size: 24px; /* Adjust font size as needed */
+    margin-bottom: 0px; /* Add some spacing between name and description */
+  }
+  
+  .projectDescription {
+    font-size: 14px; /* Adjust font size as needed */
+    top: 20px;
+    left: 20px;
+  }
+
+  .add-board-btn {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    margin-top: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .board-container {
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    margin-top: 20px;
+  }
+  
+  .board {
+    flex: 0 0 auto;
+    width: 250px; /* Adjust the width of each board */
+    height: 450px;
+    margin-right: 10px; /* Add spacing between boards */
+    background-color: var(--board-color) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Media query for responsiveness */
+  @media (max-width: 600px) {
+    .project {
+      width: 100%;
+    }
+  }
+  
