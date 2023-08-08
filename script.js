@@ -10,6 +10,8 @@ function startUp(){
     popup.style.display = "none";
 }
 
+//localStorage.clear();
+
 addProjectBtn.addEventListener("click", () => {
   popup.style.display = "flex";
 });
