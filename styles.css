@@ -7,6 +7,76 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  background-color: #b1dfdf;
+}
+img{
+  width: 30%;
+  height: 30%;
+  border-radius: 20px;
+}
+.login-container {  
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 350px;
+  text-align: center;
+}
+
+.the-form label {
+  font-size: 14px;
+  color: #333333;
+  text-align: left;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.the-form input[type="email"],
+.the-form input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333333;
+  transition: border-color 0.3s ease;
+}
+
+.the-form input[type="email"]:focus,
+.the-form input[type="password"]:focus {
+  border-color: #3498db;
+}
+
+.the-form input[type="submit"] {
+  background-color: #3498db;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.the-form input[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+.form-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.form-footer a {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.form-footer a:hover {
+  color: #2980b9;
 }
 
 .project-container {
@@ -27,6 +97,7 @@ body {
   box-sizing: border-box;
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
+  background-color: #f4f4f4;
 }
 
 .project:hover {
@@ -42,7 +113,7 @@ body {
 
 .add-project-btn {
   position: absolute;
-  top: 20px;
+  top: 30px;
   left: 20px;
   padding: 10px 20px;
   background-color: #007bff;
@@ -91,27 +162,29 @@ body {
 
 .project-info {
   position: absolute;
-  top: 10px;
+  top: 0px;
   left: 20px;
+  color: #333333;
+  
 }
 
 .projectName {
-  font-size: 24px;
-  margin-bottom: 0px;
+  font-size: 36px;
+  
 }
 
 .projectDescription {
-  font-size: 14px;
+  font-size: 78px;
   top: 20px;
   left: 20px;
 }
 
 .add-board-btn {
   position: absolute;
-  top: 80px;
+  top: 70px;
   left: 20px;
   margin-top: 10px;
-  background-color: #28a745;
+  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -134,17 +207,55 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 10px;
-  display: flex;
+  display: block;
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
+  overflow-y: auto;
 }
+
+
 
 .board.dragging {
   border: 2px dashed #007bff;
   transform: scale(1.05);
   box-shadow: none;
+}
+
+
+.cards-container {
+  display: block;
+  margin-top: 10px;
+}
+
+
+.card {
+  height: 52px;
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  width: calc(100% - 12px);
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card:hover {
+  background-color: #f4f4f4;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+#cardPopup {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 600px) {

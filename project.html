@@ -18,7 +18,12 @@
         <button class="add-board-btn">Add Board</button>
       </div>
 
-      <div class="board-container" id="boardContainer"></div>
+      <div class="board-container" id="boardContainer">
+        <div class="board" data-board-name="${board.name}">
+          <h3>${board.name}</h3>
+          <div class="cards-container"></div>
+        </div>
+      </div>
     
       <div class="popup" id="popup">
         <div class="popup-content">
@@ -30,6 +35,15 @@
         </div>
       </div>
     
+      <div class="popup" id="cardPopup">
+        <div class="popup-content">
+          <span class="close-popup" id="closeCardPopup">&times;</span>
+          <h2>Add Card</h2>
+          <input type="text" id="cardName" placeholder="Card Name">
+          <button id="saveCardBtn">Save</button>
+        </div>
+      </div>
+      
 
   <script src="project.js" defer></script>
 </body>

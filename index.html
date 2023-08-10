@@ -4,26 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
-  <title>Task Manager Application</title>
+  <title>Task Manager Application Log-in</title>
 </head>
-<body onload="startUp()">
-  
-  <button class="add-project-btn" id="addProjectBtn">Add Project</button>
+<body>
+    <img id="logo" src="TMA Logo.png">
+    <br>
+    <div class="login-container">
+        <form action="" class="the-form">
 
-  <div class="project-container" id="projectContainer">
-    <!-- Projects will be added here dynamically -->
-  </div>
+                   <label for="email">Username</label>
+                   <input type="email" name="email" id="email" placeholder="Enter your email">
+                   
+                   <label for="password">Password</label>
+                   <input type="password" name="password" id="password" placeholder="Enter your password">
+                   
+                   <button type="button" onclick="logged()">Log In</button>
+                   <br>
+               </form>
+       </div>
+       <div class="form-footer">
+               <div>
+                   <span>You may use email: admin@yahoo.com and password: password.</span>
+                   <br>
+                   <br>
+                   <span>Don't have an account? Contact System Admin for user account creation.</span>
+                   <br>
+                   <br>
+                   <a href="./Chimie_Gonzalez_Web_Page_Test_Script.pdf" target="_blank">User Manual</a>
+                   <br>
+               </div>
+       </div>
 
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <span class="close-popup" id="closePopup">&times;</span>
-      <h2>Add Project</h2>
-      <input type="text" id="projectName" placeholder="Project Name">
-      <input type="text" id="projectDescription" placeholder="Project Description">
-      <button id="saveBtn">Save</button>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+  <script src="login.js"></script>
 </body>
 </html>

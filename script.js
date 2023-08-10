@@ -7,7 +7,7 @@ const saveBtn = document.getElementById("saveBtn");
 const projectContainer = document.getElementById("projectContainer");
 
 function startUp(){
-    popup.style.display = "none";
+  popup.style.display = "none";
 }
 
 //localStorage.clear();
@@ -54,6 +54,8 @@ saveBtn.addEventListener("click", () => {
     projectNameInput.value = "";
     projectDescriptionInput.value = "";
     popup.style.display = "none";
+
+    window.location.reload();
   }
 });
 

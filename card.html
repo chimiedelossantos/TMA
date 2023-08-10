@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Task Manager Application</title>
+</head>
+<body onload="startUp()">
+  
+  <button class="add-project-btn" id="addProjectBtn">Add Project</button>
+
+  <div class="project-container" id="projectContainer">
+    <!-- Projects will be added here dynamically -->
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <span class="close-popup" id="closePopup">&times;</span>
+      <h2>Add Project</h2>
+      <input type="text" id="projectName" placeholder="Project Name">
+      <input type="text" id="projectDescription" placeholder="Project Description">
+      <button id="saveBtn">Save</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
