@@ -7,11 +7,12 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #b1dfdf;
+  background-color: #f0f3f6;
 }
 img{
-  width: 30%;
-  height: 30%;
+  display: flex;
+  width: 100%;
+  height: 100%;
   border-radius: 20px;
 }
 .login-container {  
@@ -153,11 +154,20 @@ img{
   cursor: pointer;
 }
 
-.back {
+.signOut {
   position: absolute;
   top: 20px;
   right: 20px;
   text-align: right;
+  font-size: 14px;
+}
+
+.back{
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  width: 2%;
+  height: 3%;
 }
 
 .project-info {
@@ -215,8 +225,6 @@ img{
   overflow-y: auto;
 }
 
-
-
 .board.dragging {
   border: 2px dashed #007bff;
   transform: scale(1.05);
@@ -256,6 +264,44 @@ img{
 
 #cardPopup {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+#addAttachmentsBtn, #addCommentBtn, #addChecklistBtn {
+  border: none;
+  background-color: none;
+  color: #007bff;
+}
+
+.checklist {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+
+footer {
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+}
+
+footer p {
+  margin: 0;
+  font-size: 8px;
+}
+
+footer strong {
+  font-weight: bold;
+  color: #007bff; 
 }
 
 @media (max-width: 600px) {

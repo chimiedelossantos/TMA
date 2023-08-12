@@ -1,6 +1,7 @@
 function projStartUp() {
   popup.style.display = "none";
   cardPopup.style.display = "none";
+  cardDetailsPopup.style.display = "none";
   //localStorage.clear();
 }
 
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const boardColorInput = document.getElementById("boardColor");
     const saveBoardBtn = document.getElementById("saveBoardBtn");
     const boardContainer = document.getElementById("boardContainer");
+    const cardDetailsPopup = document.getElementById("cardDetailsPopup");
 
     // Load saved boards from localStorage
     const savedBoards = JSON.parse(localStorage.getItem("boards")) || [];
@@ -52,9 +54,22 @@ document.addEventListener("DOMContentLoaded", () => {
       cardDiv.classList.add("card");
       cardDiv.textContent = card.cardName;
       cardDiv.setAttribute("data-card-id", card.cardId);
+      //Pop-up of cardDetails
+      cardDiv.addEventListener("click", () => {
+        showCardDetailsPopup(board.name, card.cardName);
+      });
+
       cardsContainer.appendChild(cardDiv);
+    
+      //Use this if card will be displayed in HTML.. ill go back, will check pop-up first
+      //cardDiv.addEventListener("click", () => {
+        //window.location.href = `card.html?cardId=${card.cardId}`;
+      //});
       
-      
+      //cardDiv.addEventListener("click", () => {
+        //window.location.href = `card.html?cardId=${card.cardId}`;
+      //});
+
     });
 
     boardDiv.appendChild(cardsContainer);
@@ -65,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     boardContainer.appendChild(boardDiv);
+    
     
   });
 
@@ -182,16 +198,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showCardPopup(boardName) {
     const cardPopup = document.getElementById("cardPopup");
-  const closeCardPopup = document.getElementById("closeCardPopup");
-  const cardNameInput = document.getElementById("cardName");
-  const saveCardBtn = document.getElementById("saveCardBtn");
+    const closeCardPopup = document.getElementById("closeCardPopup");
+    const cardNameInput = document.getElementById("cardName");
+    const saveCardBtn = document.getElementById("saveCardBtn");
 
-  cardPopup.style.display = "flex";
+    cardPopup.style.display = "flex";
 
-  saveCardBtn.addEventListener("click", () => {
+    saveCardBtn.addEventListener("click", () => {
     const cardName = cardNameInput.value;
-  if (cardName) {
-    const selectedProject = JSON.parse(localStorage.getItem("selectedProject"));
+    if (cardName) {
+      const selectedProject = JSON.parse(localStorage.getItem("selectedProject"));
     if (selectedProject) {
       const card = {
         cardName: cardName,
@@ -224,8 +240,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-  closeCardPopup.addEventListener("click", () => {
-    cardPopup.style.display = "none";
+closeCardPopup.addEventListener("click", () => {
+  cardPopup.style.display = "none";
     
   });   
 }
@@ -271,6 +287,159 @@ function handleCardDrop(event) {
         event.target.classList.remove("drag-over"); // Remove visual feedback
       }
     }
+  }
+}
+//cardDetails population popup
+function showCardDetailsPopup(boardName, cardName) {
+  const cardDetailsPopup = document.getElementById("cardDetailsPopup");
+
+  cardDetailsPopup.style.display = "flex";
+
+  const cardDetailsContent = cardDetailsPopup.querySelector(".popup-content");
+  cardDetailsContent.innerHTML = `
+    <span class="close-popup" id="closeCardDetailsPopup">&times;</span>
+    <h2>${boardName}</h2><h2>${cardName}</h2>
+    <div class="checklist">
+      <button id="addChecklistBtn">+ Checklist</button>
+    </div>
+    <div class="comments">
+      <button id="addCommentBtn">+ Comment</button>
+    </div>
+    <div class="attachments"></div>
+      <button id="addAttachmentsBtn">+ Attachment</button>
+    <button id="saveCardDetailsBtn">Save</button>
+  `;
+
+  const closeCardDetailsPopup = document.getElementById("closeCardDetailsPopup");
+  if (closeCardDetailsPopup) {
+    closeCardDetailsPopup.addEventListener("click", () => {
+      const cardDetailsPopup = document.getElementById("cardDetailsPopup");
+      cardDetailsPopup.style.display = "none";
+    });
+  }
+
+  // Handle adding checklist
+  const addChecklistBtn = cardDetailsContent.querySelector("#addChecklistBtn");
+  if (addChecklistBtn) {
+    addChecklistBtn.addEventListener("click", () => {
+      const checklistContainer = cardDetailsContent.querySelector(".checklist");
+  
+      const checklistItem = document.createElement("div");
+      checklistItem.classList.add("checklist-item");
+  
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.classList.add("checkbox");
+  
+      const textField = document.createElement("input");
+      textField.type = "text";
+      textField.placeholder = "Enter checklist item";
+      textField.classList.add("text-field");
+  
+      // Listen for blur event on the text field
+      textField.addEventListener("blur", () => {
+        const trimmedValue = textField.value.trim();
+        if (trimmedValue !== "") {
+          const newItem = createChecklistItem(trimmedValue);
+          checklistContainer.appendChild(newItem);
+          saveChecklistToLocalStorage(checklistContainer);
+          textField.value = ""; // Clear the text field
+        }
+      });
+  
+      checklistItem.appendChild(checkbox);
+      checklistItem.appendChild(textField);
+  
+      checklistContainer.appendChild(checklistItem);
+    });
+  }
+  
+  function createChecklistItem(text) {
+    const item = document.createElement("div");
+    item.classList.add("checklist-item");
+  
+    const newCheckbox = document.createElement("input");
+    newCheckbox.type = "checkbox";
+    newCheckbox.classList.add("checkbox");
+  
+    const newText = document.createElement("span");
+    newText.classList.add("text"); 
+    newText.textContent = text;
+  
+    //console.log("Text content:", text);
+  
+    item.appendChild(newCheckbox);
+    item.appendChild(newText);
+  
+    return item;
+  }
+  
+  function saveChecklistToLocalStorage(container) {
+    const checklistItems = Array.from(container.querySelectorAll(".checklist-item")).map(item => {
+      const checkbox = item.querySelector(".checkbox");
+      const textElement = item.querySelector(".text"); // Use the correct class name
+      const text = textElement ? textElement.textContent : "";
+  
+      console.log("Saved Text:", text);
+  
+      return { isChecked: checkbox.checked, text: text };
+    });
+  
+    localStorage.setItem("checklistItems", JSON.stringify(checklistItems));
+  }
+  
+  // Load checklist items from local storage on page load
+  document.addEventListener("DOMContentLoaded", () => {
+  const checklistContainer = cardDetailsContent.querySelector(".checklist");
+  const savedChecklistItems = JSON.parse(localStorage.getItem("checklistItems")) || [];
+
+  savedChecklistItems.forEach(item => {
+    const newItem = createChecklistItem(item.text);
+    const checkbox = newItem.querySelector(".checkbox");
+    checkbox.checked = item.isChecked;
+    checklistContainer.appendChild(newItem);
+
+    //console.log("Loaded Text:", item.text);
+  });
+});
+  
+  function saveChecklistToLocalStorage(container) {
+    const checklistItems = Array.from(container.querySelectorAll(".checklist-item")).map(item => {
+      const checkbox = item.querySelector(".checkbox");
+      const textElement = item.querySelector(".text"); // Use ".text" class
+      const text = textElement ? textElement.textContent : "";
+      return { isChecked: checkbox.checked, text: text };
+    });
+  
+    localStorage.setItem("checklistItems", JSON.stringify(checklistItems));
+  }
+  
+  // Load checklist items from local storage on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const checklistContainer = cardDetailsContent.querySelector(".checklist");
+    const savedChecklistItems = JSON.parse(localStorage.getItem("checklistItems")) || [];
+  
+    savedChecklistItems.forEach(item => {
+      const newItem = createChecklistItem(item.text);
+      const checkbox = newItem.querySelector(".checkbox");
+      checkbox.checked = item.isChecked;
+      checklistContainer.appendChild(newItem);
+    });
+  });
+
+  // Handle adding comment
+  const addCommentBtn = cardDetailsContent.querySelector("#addCommentBtn");
+  if (addCommentBtn) {
+    addCommentBtn.addEventListener("click", () => {
+      // Add your code to handle adding a comment here
+    });
+  }
+
+  const addAttachmentsBtn = cardDetailsContent.querySelector("#addAttachmentsBtn");
+  if (addAttachmentsBtn) {
+    addAttachmentsBtn.addEventListener("click", () => {
+      // Add your code to handle adding a comment here
+    });
   }
 }
 });

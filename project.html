@@ -8,9 +8,12 @@
 </head>
 <body onload="projStartUp()">
     <div class="project-details">
-        <div class="back">
-          <a href="index.html">Back to Projects</a>
+        <div class="signOut">
+          <a href="index.html">Sign-out</a>
         </div>
+        <a href="create.html">
+          <img class="back" src="back.png" alt="Back">
+        </a>
         <div class="project-info">
           <h2 class="projectName" id="projectName"></h2>
           <p class="projectDescription" id="projectDescription"></p>
@@ -44,7 +47,27 @@
         </div>
       </div>
       
+      <div class="popup" id="cardDetailsPopup">
+        <div class="popup-content">
+          <span class="close-popup" id="closeCardDetailsPopup">&times;</span>
+          <h2>${board.name}</h2><h2>${card.cardName}</h2>
+          <div class="checklist">
+            <div id="checklistContainer">
+              <div class="checklist-item">
+                <input type="checkbox" class="checkbox">
+                <span class="text">Example Checklist Item</span>
+              </div>
+            </div>
+          </div>
+          <div class="comments"></div>
+          <div class="attachments"></div>
+          <button id="saveCardDetailsBtn">Save</button>
+        </div>
+      </div>
 
   <script src="project.js" defer></script>
 </body>
+<footer>
+  <p>You are using <strong>Task Manager Application</strong>.</p>
+</footer>
 </html>
