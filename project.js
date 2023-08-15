@@ -52,7 +52,18 @@ document.addEventListener("DOMContentLoaded", () => {
     cardsForBoard.forEach(card => {
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
-      cardDiv.textContent = card.cardName;
+
+      const dueDateStatus = checkDueDate(card.targetDate);
+
+      // Display card name and target date together
+      cardDiv.innerHTML = `
+        <span class="card-name">${card.cardName}</span>
+        <span class="target-date">${card.targetDate}</span>
+        ${dueDateStatus === "reminder" ? '<img class="reminder" src="reminder.png">' : ''}
+        ${dueDateStatus === "delayed" ? '<img class="delayed" src="delayed.png">' : ''}
+
+      `;
+  
       cardDiv.setAttribute("data-card-id", card.cardId);
       //Pop-up of cardDetails
       cardDiv.addEventListener("click", () => {
@@ -61,14 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       cardsContainer.appendChild(cardDiv);
     
-      //Use this if card will be displayed in HTML.. ill go back, will check pop-up first
-      //cardDiv.addEventListener("click", () => {
-        //window.location.href = `card.html?cardId=${card.cardId}`;
-      //});
-      
-      //cardDiv.addEventListener("click", () => {
-        //window.location.href = `card.html?cardId=${card.cardId}`;
-      //});
 
     });
 
@@ -80,9 +83,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     boardContainer.appendChild(boardDiv);
+   
+      function checkDueDate(targetDate) {
+        const currentDate = new Date();
+        const dueDate = new Date(targetDate);
+      
+        const timeDifference = dueDate.getTime() - currentDate.getTime();
+        const daysDifference = timeDifference / (1000 * 3600 * 24);
+      
+        if (daysDifference <= 2 && daysDifference >= 0) {
+          return "reminder"; // Display reminder icon
+        } else if (dueDate < currentDate) {
+          return "delayed"; // Display delayed icon
+        } else {
+          return ""; // No icon
+        }
+      }
+
+    const runButton = document.querySelector(".run");
+
+// Add an event listener to the runButton
+const cardElements = document.querySelectorAll(".card");
+
+  cardElements.forEach(cardElement => {
+    // Get the target date from the card's target date element
+    const targetDateElement = cardElement.querySelector(".target-date");
+    const targetDate = targetDateElement.textContent; // Extract the target date value
+
+    const dueDateStatus = checkDueDate(targetDate);
+    const reminderIcon = document.querySelectorAll("reminder");
+    const delayedIcon = document.querySelectorAll("delayed");
     
-    
+
+    if (dueDateStatus === "reminder") {
+     
+
+      const reminderIcon = document.createElement("img");
+      reminderIcon.src = "reminder.png"; 
+      reminderIcon.className = "reminder"; 
+
+      cardElement.appendChild(reminderIcon);
+
+      reminderIcon.style.display = "block";
+    } else if (dueDateStatus === "delayed") {
+
+      
+      const delayedIcon = document.createElement("img");
+      delayedIcon.src = "delayed.png"; 
+      delayedIcon.className = "delayed";
+
+      cardElement.appendChild(delayedIcon);
+      delayedIcon.style.display = "block";
+    } 
   });
+});
 
 
     // Drag and drop functionality
@@ -200,18 +254,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const cardPopup = document.getElementById("cardPopup");
     const closeCardPopup = document.getElementById("closeCardPopup");
     const cardNameInput = document.getElementById("cardName");
+    const targetDateInput = document.getElementById("targetDate");
     const saveCardBtn = document.getElementById("saveCardBtn");
 
     cardPopup.style.display = "flex";
 
     saveCardBtn.addEventListener("click", () => {
     const cardName = cardNameInput.value;
+    const targetDate = targetDateInput.value;
     if (cardName) {
       const selectedProject = JSON.parse(localStorage.getItem("selectedProject"));
     if (selectedProject) {
       const card = {
         cardName: cardName,
-        boardName: boardName, // You need to define the boardName variable here
+        targetDate: targetDate,
+        boardName: boardName,
         projectName: selectedProject.name
       };
 
@@ -234,6 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       cardNameInput.value = "";
       cardPopup.style.display = "none";
+      targetDateInput.value = ""; 
 
       window.location.reload();
     }
@@ -298,7 +356,7 @@ function showCardDetailsPopup(boardName, cardName) {
   const cardDetailsContent = cardDetailsPopup.querySelector(".popup-content");
   cardDetailsContent.innerHTML = `
     <span class="close-popup" id="closeCardDetailsPopup">&times;</span>
-    <h2>${boardName}</h2><h2>${cardName}</h2>
+    <h2>${cardName}</h2>
     <div class="checklist">
       <button id="addChecklistBtn">+ Checklist</button>
     </div>
@@ -307,14 +365,15 @@ function showCardDetailsPopup(boardName, cardName) {
     </div>
     <div class="attachments"></div>
       <button id="addAttachmentsBtn">+ Attachment</button>
-    <button id="saveCardDetailsBtn">Save</button>
   `;
 
   const closeCardDetailsPopup = document.getElementById("closeCardDetailsPopup");
+  const cardPopup = document.getElementById("cardPopup");
   if (closeCardDetailsPopup) {
     closeCardDetailsPopup.addEventListener("click", () => {
       const cardDetailsPopup = document.getElementById("cardDetailsPopup");
       cardDetailsPopup.style.display = "none";
+      cardPopup.style.display = "none";
     });
   }
 
@@ -343,7 +402,7 @@ function showCardDetailsPopup(boardName, cardName) {
           const newItem = createChecklistItem(trimmedValue);
           checklistContainer.appendChild(newItem);
           saveChecklistToLocalStorage(checklistContainer);
-          textField.value = ""; // Clear the text field
+          textField.value = ""; 
         }
       });
   
@@ -353,7 +412,7 @@ function showCardDetailsPopup(boardName, cardName) {
       checklistContainer.appendChild(checklistItem);
     });
   }
-  
+      
   function createChecklistItem(text) {
     const item = document.createElement("div");
     item.classList.add("checklist-item");
@@ -366,10 +425,13 @@ function showCardDetailsPopup(boardName, cardName) {
     newText.classList.add("text"); 
     newText.textContent = text;
   
-    //console.log("Text content:", text);
-  
+    const changeDateElement = document.createElement("span");
+    changeDateElement.classList.add("change-date");
+    
+
     item.appendChild(newCheckbox);
     item.appendChild(newText);
+    
   
     return item;
   }
@@ -379,67 +441,188 @@ function showCardDetailsPopup(boardName, cardName) {
       const checkbox = item.querySelector(".checkbox");
       const textElement = item.querySelector(".text"); // Use the correct class name
       const text = textElement ? textElement.textContent : "";
-  
-      console.log("Saved Text:", text);
-  
       return { isChecked: checkbox.checked, text: text };
     });
   
     localStorage.setItem("checklistItems", JSON.stringify(checklistItems));
   }
   
-  // Load checklist items from local storage on page load
-  document.addEventListener("DOMContentLoaded", () => {
+  // Load checklist items from local storage and display on page load
   const checklistContainer = cardDetailsContent.querySelector(".checklist");
   const savedChecklistItems = JSON.parse(localStorage.getItem("checklistItems")) || [];
-
+  
   savedChecklistItems.forEach(item => {
     const newItem = createChecklistItem(item.text);
     const checkbox = newItem.querySelector(".checkbox");
     checkbox.checked = item.isChecked;
     checklistContainer.appendChild(newItem);
-
-    //console.log("Loaded Text:", item.text);
   });
-});
+
+  checklistContainer.addEventListener("change", (event) => {
+    const clickedCheckbox = event.target;
+    if (clickedCheckbox.classList.contains("checkbox")) {
+      updateChecklistItemStatus(clickedCheckbox);
+      saveChecklistToLocalStorage(checklistContainer);
+      updateChangeDate(clickedCheckbox);
+    }
+  });
   
-  function saveChecklistToLocalStorage(container) {
-    const checklistItems = Array.from(container.querySelectorAll(".checklist-item")).map(item => {
-      const checkbox = item.querySelector(".checkbox");
-      const textElement = item.querySelector(".text"); // Use ".text" class
-      const text = textElement ? textElement.textContent : "";
-      return { isChecked: checkbox.checked, text: text };
-    });
-  
-    localStorage.setItem("checklistItems", JSON.stringify(checklistItems));
+  function updateChecklistItemStatus(checkbox) {
+    const checklistItem = checkbox.closest(".checklist-item");
+    const textElement = checklistItem.querySelector(".text");
+    
+    // Find the index of the checklist item in the savedChecklistItems array
+    const index = Array.from(checklistContainer.querySelectorAll(".checklist-item")).indexOf(checklistItem);
+    
+    if (index !== -1 && textElement) {
+      savedChecklistItems[index].isChecked = checkbox.checked;
+    }
   }
   
-  // Load checklist items from local storage on page load
-  document.addEventListener("DOMContentLoaded", () => {
-    const checklistContainer = cardDetailsContent.querySelector(".checklist");
-    const savedChecklistItems = JSON.parse(localStorage.getItem("checklistItems")) || [];
+  function updateChangeDate(checkbox) {
+    const checklistItem = checkbox.closest(".checklist-item");
+    const changeDateElement = checklistItem.querySelector(".change-date");
+    
+    if (changeDateElement) {
+      const index = Array.from(checklistContainer.querySelectorAll(".checklist-item")).indexOf(checklistItem);
+      if (index !== -1) {
+        savedChecklistItems[index].changeDate = new Date().toLocaleDateString();
+        changeDateElement.textContent = savedChecklistItems[index].changeDate;
+      }
+    }
+  }
   
-    savedChecklistItems.forEach(item => {
-      const newItem = createChecklistItem(item.text);
-      const checkbox = newItem.querySelector(".checkbox");
-      checkbox.checked = item.isChecked;
-      checklistContainer.appendChild(newItem);
-    });
-  });
+  
 
   // Handle adding comment
   const addCommentBtn = cardDetailsContent.querySelector("#addCommentBtn");
   if (addCommentBtn) {
     addCommentBtn.addEventListener("click", () => {
-      // Add your code to handle adding a comment here
+      const commentsContainer = cardDetailsContent.querySelector(".comments");
+  
+      const commentInput = document.createElement("input");
+      commentInput.type = "text";
+      commentInput.placeholder = "Enter comment";
+      commentInput.classList.add("text-field");
+  
+      const saveCommentBtn = document.createElement("button");
+      saveCommentBtn.textContent = "Save Comment";
+  
+      saveCommentBtn.addEventListener("click", () => {
+        const trimmedValue = commentInput.value.trim();
+        if (trimmedValue !== "") {
+          const saveDate = new Date().toISOString(); 
+          const newComment = createCommentItem(trimmedValue, saveDate);
+          commentsContainer.appendChild(newComment);
+          saveCommentToLocalStorage(commentsContainer, trimmedValue, saveDate);
+          commentInput.value = "";
+        }
+      });
+  
+      commentsContainer.appendChild(commentInput);
+      commentsContainer.appendChild(saveCommentBtn);
     });
   }
+  
+  function createCommentItem(commentText, saveDate) {
+    const commentItem = document.createElement("div");
+    commentItem.classList.add("comment-item");
+  
+    const commentTextElement = document.createElement("span");
+    commentTextElement.classList.add("comment-text");
+    commentTextElement.textContent = commentText;
+  
+    const saveDateElement = document.createElement("span");
+    saveDateElement.classList.add("comment-date");
+    saveDateElement.textContent = new Date(saveDate).toLocaleString(); // Convert save date to a readable format
+  
+    commentItem.appendChild(saveDateElement);
+    commentItem.appendChild(commentTextElement);
+    
+    return commentItem;
+  }
+  
+  function saveCommentToLocalStorage(container, commentText, saveDate) {
+    const comments = JSON.parse(localStorage.getItem("comments")) || [];
+    const newComment = { text: commentText, date: saveDate };
+    comments.push(newComment);
+    localStorage.setItem("comments", JSON.stringify(comments));
+  }
+
+  function displaySavedComments() {
+    const commentsContainer = cardDetailsContent.querySelector(".comments");
+    const savedComments = JSON.parse(localStorage.getItem("comments")) || [];
+  
+    savedComments.forEach(comment => {
+      const commentItem = createCommentItem(comment.text, comment.date);
+      commentsContainer.appendChild(commentItem);
+    });
+  }
+  
+  // Call the function to display saved comments when the page loads
+  displaySavedComments();
+
 
   const addAttachmentsBtn = cardDetailsContent.querySelector("#addAttachmentsBtn");
   if (addAttachmentsBtn) {
     addAttachmentsBtn.addEventListener("click", () => {
-      // Add your code to handle adding a comment here
+      // Create an input element for file upload
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = "image/*, .pdf, .doc, .docx"; // You can specify accepted file types
+  
+      // Listen for file selection
+      fileInput.addEventListener("change", () => {
+        const selectedFile = fileInput.files[0];
+        if (selectedFile) {
+          // Save the file to localStorage
+          saveAttachmentToLocalStorage(selectedFile);
+  
+          // Display the saved file
+          displaySavedAttachments(cardDetailsContent);
+        }
+      });
+  
+      // Trigger the file input click event
+      fileInput.click();
+    });
+
+  }
+
+  
+  
+  // Function to save attachment to localStorage
+  function saveAttachmentToLocalStorage(file) {
+    const attachments = JSON.parse(localStorage.getItem("attachments")) || [];
+    attachments.push(file.name); // You can save the file name or other relevant information
+    localStorage.setItem("attachments", JSON.stringify(attachments));
+  
+     // localStorage.setItem(file.name, file);
+  }
+  
+  
+  // Function to display saved attachments
+  function displaySavedAttachments(container) {
+    const attachmentsContainer = container.querySelector(".attachments");
+    attachmentsContainer.innerHTML = ""; // Clear the container
+  
+    const attachments = JSON.parse(localStorage.getItem("attachments")) || [];
+    attachments.forEach(attachmentName => {
+      const attachmentItem = document.createElement("div");
+      attachmentItem.classList.add("attachment-item");
+  
+      const attachmentLink = document.createElement("a");
+      attachmentLink.href = attachmentName; // You can set the correct link based on your needs
+      attachmentLink.textContent = attachmentName;
+      attachmentLink.target = "_blank"; // Open link in a new tab
+  
+      attachmentItem.appendChild(attachmentLink);
+      attachmentsContainer.appendChild(attachmentItem);
     });
   }
+  
+  
+  // Call the displaySavedAttachments function on page load to display saved attachments
+  displaySavedAttachments(cardDetailsContent);
 }
 });

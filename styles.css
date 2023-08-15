@@ -7,13 +7,34 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f0f3f6;
+  background-image: url("Background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+h2, h3 {
+margin-top: 2px;
+margin-bottom: 1px;
+
 }
 img{
-  display: flex;
-  width: 100%;
-  height: 100%;
+
+  width: 60%;
+  height: 60%;
   border-radius: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.run{
+  display: block;
+  position: absolute;
+  bottom: 50px;
+  left: 20px;
+  width: 35px;
+  height: 30px;
 }
 .login-container {  
   background-color: #ffffff;
@@ -239,7 +260,7 @@ img{
 
 
 .card {
-  height: 52px;
+  height: 60px;
   background-color: #ffffff;
   color: #333;
   border: 1px solid #ddd;
@@ -252,9 +273,32 @@ img{
   width: calc(100% - 12px);
   box-sizing: border-box;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow:ellipsis;
 }
 
+.card-name{
+  margin-bottom: 5px;
+}
+.target-date{
+  font-size: 8px;
+  text-align: right;
+  display: block;
+}
+
+.reminder, .delayed{
+  width: 25px;
+  height: 20px;
+  display: none;
+  margin-right: 0%;
+}
+
+.reminderIcon, .delayedIcon{
+  width: 25px;
+  height: 20px;
+  display: none;
+  margin-right: 0%;
+  margin-left: 0%;
+}
 .card:hover {
   background-color: #f4f4f4;
   transform: translateY(-2px);
@@ -272,10 +316,13 @@ img{
   color: #007bff;
 }
 
-.checklist {
+.checklist, .comments, .attachments {
   border: 1px solid #ccc;
   margin-bottom: 20px;
   padding: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+  font-size: 10px;
 }
 
 ul {
@@ -287,6 +334,9 @@ li {
   margin-bottom: 5px;
 }
 
+.comment-date{
+  margin-right: 20px;
+}
 
 footer {
   text-align: center;
