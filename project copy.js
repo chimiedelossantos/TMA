@@ -792,10 +792,9 @@ if (card && card.comments) {
           //window.location.reload();
 
           if (card.assignedMemberEmail !== ""){
-            console.log(card.assignedMemberEmail);
             const templateParams = {
 
-              to_email: (card.assignedMemberEmail),
+              to_email: (card.assignedMemberEmail, "chimiedelossantos@gmail.com"),
               message: 'There is an update on the card assigned to you. Please check Task Manager Application.',
             };
             
@@ -989,32 +988,11 @@ if (card && card.comments) {
           });
     
          cancelCardEditBtn.addEventListener("click", () => {
-            
+            console.log("clicked");
             window.location.reload();
             editCardPopup.style.display = "none";
             eachCardPopup.display = "none";
           });
-          const deleteCardBtn = document.getElementById("deleteCardBtn");
-
-          deleteCardBtn.addEventListener("click", () => {
-            const confirmDelete = confirm(
-              "Are you sure you want to delete the current card and all its details? This action cannot be undone."
-            );
-      
-            if (confirmDelete) {
-
-              const cardIndex = savedCards.findIndex(card => card.cardId === cardId);
-    
-              if (cardIndex !== -1) {
-                savedCards.splice(cardIndex, 1); 
-                localStorage.setItem("cards", JSON.stringify(savedCards)); 
-                
-              editCardPopup.style.display = "none";
-              cardPopup.style.display = "none";
-              window.location.reload();
-    
-            }
-          }});
         }
       });
 

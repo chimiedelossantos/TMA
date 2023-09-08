@@ -5,6 +5,15 @@ const projectNameInput = document.getElementById("projectName");
 const projectDescriptionInput = document.getElementById("projectDescription");
 const saveBtn = document.getElementById("saveBtn");
 const projectContainer = document.getElementById("projectContainer");
+const membersList = document.getElementById("membersList");
+const addMemberBtn = document.getElementById("addMemberBtn");
+const memberRoleDropdown = document.getElementById("memberRoleDropdown");
+const memberNameInput = document.getElementById("memberNameInput");
+const memberEmailInput = document.getElementById("memberEmailInput");
+const memberRoleInput = document.getElementById("memberRoleInput");
+const confirmAddMemberBtn = document.getElementById("confirmAddMemberBtn");
+
+
 
 function startUp(){
   popup.style.display = "none";
@@ -16,12 +25,15 @@ addProjectBtn.addEventListener("click", () => {
   popup.style.display = "flex";
 });
 
+const addedMembers = [];
+
+
 closePopup.addEventListener("click", () => {
   popup.style.display = "none";
 });
 
 // Load saved projects from localStorage
-const savedProjects = JSON.parse(localStorage.getItem("projects")) || [];
+savedProjects = JSON.parse(localStorage.getItem("projects")) || [];
 
 // Display saved projects on page load
 savedProjects.forEach(project => {
@@ -39,7 +51,11 @@ saveBtn.addEventListener("click", () => {
   const projectDescription = projectDescriptionInput.value;
 
   if (projectName) {
-    const project = { name: projectName, description: projectDescription, boards: [] };
+    const project = {
+      name: projectName,
+      description: projectDescription,
+
+    };
     savedProjects.push(project);
     localStorage.setItem("projects", JSON.stringify(savedProjects));
 
@@ -51,6 +67,8 @@ saveBtn.addEventListener("click", () => {
     `;
     projectContainer.appendChild(projectDiv);
 
+    addedMembers.length = 0;
+
     projectNameInput.value = "";
     projectDescriptionInput.value = "";
     popup.style.display = "none";
@@ -58,6 +76,7 @@ saveBtn.addEventListener("click", () => {
     window.location.reload();
   }
 });
+
 
 const projectBoxes = document.querySelectorAll(".project");
 projectBoxes.forEach((projectBox, index) => {

@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
   <title>Project Details</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+          (function() {
+        emailjs.init('vU1rMKRUZmxs6kU6I');
+      })();
+  </script>
 </head>
 <body onload="projStartUp()">
     <div class="project-details">
@@ -13,6 +19,9 @@
         </div>
         <a href="create.html">
           <img class="back" src="back.png" alt="Back">
+        </a>
+        <a href="adminTool.html">
+          <img class="adminTool" src="AdminTool.png" alt="Admin Tool">
         </a>
         <div class="project-info">
           <h1 class="projectName" id="projectName"></h1>
@@ -42,40 +51,82 @@
         <div class="popup-content">
           <span class="close-popup" id="closeCardPopup">&times;</span>
           <h2>Add Card</h2>
+          <input type="hidden" id="cardId">
           <input type="text" id="cardName" placeholder="Card Name">
-          <input type="date" id="targetDate" placeholder="Target Date">
+          <input type="date" id="targetDate" placeholder="Target Date"><br>
+          <label for="assignedMember">Assigned Team Member:</label>
+          <select id="assignedMember"></select>
           <button id="saveCardBtn">Save</button>
         </div>
       </div>
       
-      <div class="popup" id="cardDetailsPopup">
-        <div class="popup-content">
-          <span class="close-popup" id="closeCardDetailsPopup">&times;</span>
-          <h2>${card.cardName}</h2>
-          <div class="checklist">
-            <div id="checklistContainer">
-              <div class="checklist-item">
-                <input type="checkbox" class="checkbox">
-                <span class="text">Example Checklist Item</span>
-                <span class="change-date"></span>
-              </div>
-            </div>
-          </div>
-          <div class="comments-container"></div>
-          <div class="add-comment">
-            <button id="addCommentBtn">Add Comment</button>
-            <input type="text" id="commentInput" placeholder="Enter your comment" style="display: none;">
-          </div>
-          <div class="attachments">
-            <button id="addAttachmentsBtn">Add Comment</button>
-            <div class="attachments"></div>
-          </div>
-          <button id="saveCardDetailsBtn">Save</button>
+      <div class="edit-popup" id="editPopup">
+        <div class="editpopup-content">
+        <h3>Edit Board</h3>
+        <label for="editBoardNameInput">Board Name:</label>
+        <input type="text" id="editBoardNameInput"><br>
+        <label for="editBoardColorInput">Board Color:</label>
+        <input type="color" id="editBoardColorInput"><br>
+        <button id="saveEditBtn">Save Changes</button>
+        <button id="cancelEditBtn">Cancel</button>
+        <button id="deleteBoardBtn">Delete Board</button>
         </div>
       </div>
-      <img class="run" src="run.png" alt="Run Schedule">
+
+      <div class="edit-card-popup" id="editCardPopup">
+        <div class="edit-card-popup-content">
+          <h2>Edit Card Details</h2>
+          <label for="editCardNameInput">Card Name:</label>
+          <input type="text" id="editCardNameInput"><br>
+          <label for="editTargetDateInput">Target Date:</label>
+          <input type="date" id="editTargetDateInput"><br>
+          <label for="editAssignedMember">Assigned Team Member:</label>
+          <select id="editAssignedMember"></select><br>
+          <button id="saveEditCardBtn">Save Changes</button>
+          <button id="cancelCardEditBtn">Cancel</button>
+          <button id="deleteCardBtn">Delete Card</button>
+          <input type="hidden" data-card-id="${card.cardId}">
+
+        </div>
+      </div>
+
+    <div id="completionPercentageDisplay"></div>
+
+    
+    <div id="progressBarReportContainer">
+           <div id="progressBarReport"></div>
+    </div>
+    
+    <div class="team">
+      <img id="teamMembers" src="teamMember.png">
+    </div>
+  
+    <div class="popup" id="teamMemberPopup">
+      <div class="popup-content">
+        <span class="close-popup" id="closeTeamMemberPopup">&times;</span>
+        <h3>Add Team Member</h3>
+        <div class = "teamMemberInputContainer">
+        <input type="text" id="teamMemberName" placeholder="Team Member Name">
+        <input type="email" id="teamMemberEmail" placeholder="Email Address">
+        <select id="teamMemberRole">
+          <option value="Scrum Master">Scrum Master</option>
+          <option value="Developer">Developer</option>
+          <option value="Tester">Tester</option>
+          <option value="Stakeholder">Stakeholder</option>
+          <option value="Product Owner">Product Owner</option>
+        </select>
+        <button id="saveTeamMemberBtn">Save</button>
+        </div>
+        <h3>Added Team Member</h3>
+        <div class = teamMemberListContainer>
+          <ul id="teamMembersList"></ul>
+        </div>
+      </div>
+    </div>
+
 
   <script src="project.js" defer></script>
+  
 </body>
 <footer>
   <p>You are using <strong>Task Manager Application</strong>.</p>

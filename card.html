@@ -1,15 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Task Manager Application</title>
+    <style>
+        #progressBarContainer {
+            width: 100%;
+            background-color: #f1f1f1;
+        }
+
+        #progressBar {
+            width: 0;
+            height: 30px;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-  
+    <div id="progressBarContainer">
+        <div id="progressBar">0%</div>
+    </div>
 
+    <script>
+        const savedCardsCount = 50; // Replace with your actual saved cards count
+        const completedCardsCount = 25; // Replace with your actual completed cards count
 
-  <script src="login.js"></script>
+        const progressBar = document.getElementById("progressBar");
+        const completionPercentage = (completedCardsCount / savedCardsCount) * 100;
+
+        progressBar.style.width = completionPercentage + "%";
+        progressBar.textContent = completionPercentage.toFixed(2) + "%";
+    </script>
 </body>
 </html>
