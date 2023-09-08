@@ -799,7 +799,7 @@ if (card && card.comments) {
               message: 'There is an update on the card assigned to you. Please check Task Manager Application.',
             };
             
-            emailjs.send('service_7cn5jlr', 'template_y2sw0if', templateParams)
+            emailjs.send('xxxx', 'xxx', templateParams)
               .then(function(response) {
                 console.log('Email sent successfully:', response);
                 alert("Email has been sent to the assigned team member.")
